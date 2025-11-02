@@ -8,7 +8,7 @@ KollectionX is a collection of custom data structure implementations built with 
 
 ## Features
 
-- **LinkedList**: A singly linked list implementation with the following operations:
+- **SingleLinkedList**: A singly linked list implementation with the following operations:
   - `append(value)` - Add elements to the end
   - `prepend(value)` - Add elements to the beginning
   - `insert(value, index)` - Insert at a specific position
@@ -40,10 +40,10 @@ KollectionX is a collection of custom data structure implementations built with 
 ## Usage
 
 ```kotlin
-import io.github.pycodeslab.kollectionx.list.LinkedList
+import io.github.pycodeslab.kollectionx.list.SingleLinkedList
 
-// Create a new LinkedList
-val list = LinkedList<Int>()
+// Create a new SingleLinkedList
+val list = SingleLinkedList<Int>()
 
 // Add elements
 list.append(1)
@@ -66,11 +66,12 @@ println(list.size) // Output: 3
 src/
 ├── main/kotlin/io/github/pycodeslab/kollectionx/
 │   └── list/
-│       ├── List.kt          # Generic list interface
-│       ├── Node.kt          # Internal node class
-│       └── LinkedList.kt    # LinkedList implementation
+│       ├── List.kt               # Generic list interface
+│       ├── SingleLinkedList.kt   # SingleLinkedList implementation
+│       └── node/
+│           └── SingleNode.kt     # Internal node class
 └── test/kotlin/
-    └── LinkedListTest.kt    # Unit tests
+    └── SingleLinkedListTest.kt   # Unit tests
 ```
 
 ## Testing

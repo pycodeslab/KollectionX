@@ -1,15 +1,16 @@
 package io.github.pycodeslab.kollectionx.list
 
+import io.github.pycodeslab.kollectionx.list.node.SingleNode
+
 /**
- * A singly linked list implementation.
+ * A singly linked list implementation where each node contains a reference to the next node only.
  *
- * This implementation uses nodes connected by references to form a linear data structure.
- * Elements are added to the end by traversing the entire list.
+ * This implementation maintains elements in insertion order and allows duplicate values.
  *
  * @param T the type of elements in this list
  */
-class LinkedList<T>: List<T> {
-    private var head: Node<T>? = null
+class SingleLinkedList<T>: List<T, SingleNode<T>> {
+    private var head: SingleNode<T>? = null
     private var count: Int = 0
 
     /**
@@ -21,10 +22,12 @@ class LinkedList<T>: List<T> {
     /**
      * Appends an element to the end of the list.
      *
+     * Requires traversing the entire list to find the last node.
+     *
      * @param value the element to append
      */
-    override fun append(value: T) {
-        val newNode = Node(value)
+    override fun append(value: T): SingleNode<T> {
+        val newNode = SingleNode(value)
 
         if (head == null) {
             head = newNode
@@ -36,57 +39,67 @@ class LinkedList<T>: List<T> {
             current?.next = newNode
         }
         count++
+
+        return newNode
     }
 
     /**
      * Prepends an element to the beginning of the list.
      *
+     * The new node becomes the head.
+     *
      * @param value the element to prepend
      */
-    override fun prepend(value: T) {
-        val newNode = Node(value)
+    override fun prepend(value: T): SingleNode<T> {
+        val newNode = SingleNode(value)
         newNode.next = head
         head = newNode
         count++
+
+        return newNode
     }
 
     /**
      * Inserts an element at the specified index.
      *
+     * Valid index range: 0 to size (inclusive).
+     *
      * @param value the element to insert
-     * @param index the index at which to insert the element
-     * @throws IndexOutOfBoundsException if the index is out of range
+     * @param index the index at which to insert the element (0-based)
+     * @throws IndexOutOfBoundsException if index < 0 or index > size
      */
-    override fun insert(value: T, index: Int) {
+    override fun insert(value: T, index: Int): SingleNode<T> {
         if (index !in 0..count) {
             throw IndexOutOfBoundsException("Index $index is out of bounds for size $count")
         }
 
         if (index == 0) {
-            prepend(value)
-            return
+            return prepend(value)
         }
 
         if (index == count) {
-            append(value)
-            return
+            return append(value)
         }
 
-        val newNode = Node(value)
+        val newNode = SingleNode(value)
         val nodeBefore = getNodeAt(index - 1)
 
         newNode.next = nodeBefore?.next
         nodeBefore?.next = newNode
         count++
+
+        return newNode
     }
 
     /**
-     * Removes an element at the specified index.
+     * Removes the element at the specified index.
      *
-     * @param index the index of the element to remove
-     * @throws IndexOutOfBoundsException if the index is out of range
+     * Valid index range: 0 to size-1 (inclusive).
+     *
+     * @param index the index of the element to remove (0-based)
+     * @throws IndexOutOfBoundsException if index < 0 or index >= size
      */
-    override fun remove(index: Int) {
+    override fun remove(index: Int): SingleNode<T>? {
         if (index !in 0 until count) {
             throw IndexOutOfBoundsException("Index $index is out of bounds for size $count")
         }
@@ -98,9 +111,11 @@ class LinkedList<T>: List<T> {
             nodeBefore?.next = nodeBefore.next?.next
         }
         count--
+
+        return head
     }
 
-    private fun getNodeAt(index: Int): Node<T>? {
+    private fun getNodeAt(index: Int): SingleNode<T>? {
         if (index == -1) return null
 
         var current = head
